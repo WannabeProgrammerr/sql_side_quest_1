@@ -23,50 +23,145 @@ This project is designed to demonstrate SQL skills and techniques typically used
 - **Table Creation**: A table named `retail_sales` is created to store the sales data. The table structure includes columns for transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount.
 
 ```sql
-CREATE DATABASE p1_retail_db;
+DROP TABLE IF EXISTS retail_sales;
 
 CREATE TABLE retail_sales
-(
-    transactions_id INT PRIMARY KEY,
-    sale_date DATE,	
-    sale_time TIME,
-    customer_id INT,	
-    gender VARCHAR(10),
-    age INT,
-    category VARCHAR(35),
-    quantity INT,
-    price_per_unit FLOAT,	
-    cogs FLOAT,
-    total_sale FLOAT
+	(transactions_id	INT PRIMARY KEY NOT NULL,
+	 sale_date			DATE,
+	 sale_time			TIME,
+	 customer_id  		INT,
+	 gender				VARCHAR(10),
+	 age				INT,
+	 category     		VARCHAR(15),
+	 quantity			INT,
+	 price_per_unit		FLOAT,
+	 cogs				FLOAT,
+	 total_sale			FLOAT
 );
+
+SELECT * 
+FROM retail_sales
+LIMIT 10;
 ```
 
-### 2. Data Exploration & Cleaning
+### 2. Data Cleaning
 
-- **Record Count**: Determine the total number of records in the dataset.
-- **Customer Count**: Find out how many unique customers are in the dataset.
-- **Category Count**: Identify all unique product categories in the dataset.
 - **Null Value Check**: Check for any null values in the dataset and delete records with missing data.
 
 ```sql
-SELECT COUNT(*) FROM retail_sales;
-SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
-SELECT DISTINCT category FROM retail_sales;
+SELECT * 
+FROM retail_sales
+WHERE transactions_id  IS NULL;
 
-SELECT * FROM retail_sales
-WHERE 
-    sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-    gender IS NULL OR age IS NULL OR category IS NULL OR 
-    quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+SELECT * 
+FROM retail_sales
+WHERE sale_date IS NULL;
+
+SELECT * 
+FROM retail_sales
+WHERE sale_time IS NULL;
+
+/*Now doing this across each column where we check for NULL values across all the columns 
+would be time consuming, in this case we can use the NESTED WHERE Clause.*/
+
+SELECT * 
+FROM retail_sales
+WHERE transactions_id IS NULL 
+	or 
+	  sale_date IS NULL 
+	  or 
+	  sale_time IS NULL 
+	  or
+	  customer_id IS NULL 
+	  or
+	  gender IS NULL 
+	  or
+	  age IS NULL
+	  or
+	  category IS NULL 
+	  or
+	  quantity IS NULL 
+	  or
+	  price_per_unit IS NULL 
+	  or
+	  cogs IS NULL 
+	  or
+	  total_sale IS NULL;
+
+/* Now we can either delete or replace the NULL Values. 
+In this case we are deleting the NULL Values. */
 
 DELETE FROM retail_sales
-WHERE 
-    sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-    gender IS NULL OR age IS NULL OR category IS NULL OR 
-    quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+WHERE transactions_id IS NULL 
+	or 
+	  sale_date IS NULL 
+	  or 
+	  sale_time IS NULL 
+	  or
+	  customer_id IS NULL 
+	  or
+	  gender IS NULL 
+	  or
+	  age IS NULL
+	  or
+	  category IS NULL 
+	  or
+	  quantity IS NULL 
+	  or
+	  price_per_unit IS NULL 
+	  or
+	  cogs IS NULL 
+	  or
+	  total_sale IS NULL;
+
+/* Here filtering which rows you want to delete is VERY IMPORTANT otherwise the DELETE Clause
+will just delete all the rows from the table. */
+
+--To verify if we have any more NULL Values. 
+SELECT * 
+FROM retail_sales
+WHERE transactions_id IS NULL 
+	or 
+	  sale_date IS NULL 
+	  or 
+	  sale_time IS NULL 
+	  or
+	  customer_id IS NULL 
+	  or
+	  gender IS NULL 
+	  or
+	  age IS NULL
+	  or
+	  category IS NULL 
+	  or
+	  quantity IS NULL 
+	  or
+	  price_per_unit IS NULL 
+	  or
+	  cogs IS NULL 
+	  or
+	  total_sale IS NULL;
+```
+### 3. Data Exploration
+
+**Record Count: Determine the total number of records in the dataset.**
+```sql
+SELECT 
+	COUNT(*) as total_sales
+FROM retail_sales;
+or
+SELECT COUNT(*) FROM retail_sales;
+```
+**Customer Count: Find out how many unique customers are in the dataset.**
+```sql
+SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
+```
+**Category Count: Identify all unique product categories in the dataset.**
+```sql
+SELECT DISTINCT category FROM retail_sales;
 ```
 
-### 3. Data Analysis & Findings
+### 4. Data Analysis & Findings
 
 The following SQL queries were developed to answer specific business questions:
 
@@ -147,7 +242,7 @@ GROUP BY 1, 2
 WHERE rank = 1
 ```
 
-8. **Write a SQL query to find the top 5 customers based on the highest total sales **:
+8. **Write a SQL query to find the top 5 customers based on the highest total sales**:
 ```sql
 SELECT 
     customer_id,
@@ -204,24 +299,25 @@ GROUP BY shift
 
 This project serves as a comprehensive introduction to SQL for data analysts, covering database setup, data cleaning, exploratory data analysis, and business-driven SQL queries. The findings from this project can help drive business decisions by understanding sales patterns, customer behavior, and product performance.
 
-## How to Use
+## 👨‍💻 About the Author
 
-1. **Clone the Repository**: Clone this project repository from GitHub.
-2. **Set Up the Database**: Run the SQL scripts provided in the `database_setup.sql` file to create and populate the database.
-3. **Run the Queries**: Use the SQL queries provided in the `analysis_queries.sql` file to perform your analysis.
-4. **Explore and Modify**: Feel free to modify the queries to explore different aspects of the dataset or answer additional business questions.
+**Jigar Naik | Data Analyst | SQL • Python • Power BI**
 
-## Author - Zero Analyst
+This project is part of my growing **Data Analytics Portfolio**, where I showcase my hands-on experience with SQL, data exploration, data cleaning, and analytical problem-solving.
 
-This project is part of my portfolio, showcasing the SQL skills essential for data analyst roles. If you have any questions, feedback, or would like to collaborate, feel free to get in touch!
+My goal is to transform raw data into meaningful insights that support **data-driven decision-making and business growth**.
 
-### Stay Updated and Join the Community
+Through my portfolio, I aim to demonstrate my technical proficiency, analytical thinking, and ability to solve real-world business problems using data.
 
-For more content on SQL, data analysis, and other data-related topics, make sure to follow me on social media and join our community:
+### 🤝 Let's Connect!
 
-- **YouTube**: [Subscribe to my channel for tutorials and insights](https://www.youtube.com/@zero_analyst)
-- **Instagram**: [Follow me for daily tips and updates](https://www.instagram.com/zero_analyst/)
-- **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/najirr)
-- **Discord**: [Join our community to learn and grow together](https://discord.gg/36h5f2Z5PK)
+I'm always open to connecting with fellow data enthusiasts, industry professionals, and recruiters. Whether you'd like to discuss a project, share feedback, explore collaboration opportunities, or simply connect, feel free to reach out!
 
-Thank you for your support, and I look forward to connecting with you!
+* 💼 **LinkedIn:** [Connect with me on LinkedIn](https://www.linkedin.com/in/jigar-naik-5a763518b/)
+* 📧 **Email:** [Get in touch](mailto:tojigarnaik@gmail.com)
+
+⭐ If you find this project interesting or useful, consider giving the repository a star!
+
+**Thank you for visiting my portfolio. Happy analyzing! 🚀**
+
+
